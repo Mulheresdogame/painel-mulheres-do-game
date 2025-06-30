@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel de Administração</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    .login-container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1e1e1e;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 30px #f1368f55;
+      width: 300px;
+    }
+    .login-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #f1368f;
+    }
+    .login-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      background: #2e2e2e;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+    }
+    .login-container button {
+      width: 100%;
+      background: #f1368f;
+      border: none;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .panel {
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #222;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #555;
+      text-align: left;
+    }
+    h1 {
+      color: #f1368f;
+    }
+    img {
+      max-width: 100px;
+    }
+    #painel-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container" id="login-form">
+    <h2>Login do Painel</h2>
+    <input type="text" id="usuario" placeholder="Usuário" />
+    <input type="password" id="senha" placeholder="Senha" />
+    <button onclick="fazerLogin()">Entrar</button>
+  </div>
+  <div class="panel" id="painel-content">
+    <h1>Candidaturas Recebidas</h1>
+    <table id="tabela">
+      <thead>
+        <tr><th>ID</th><th>Nome</th><th>Idade</th><th>País</th><th>Província</th><th>Email</th><th>Telefone</th><th>Sobre</th><th>Foto</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script>
+    function fazerLogin() {
+      const usuario = document.getElementById("usuario").value;
+      const senha = document.getElementById("senha").value;
+      if (usuario === "Mendel1122" && senha === "1@Mendel") {
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("painel-content").style.display = "block";
+        fetch("/api/candidaturas").then(r => r.json()).then(candidatas => {
+          const tbody = document.querySelector("tbody");
+          candidatas.forEach(c => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${c.id}</td>
+              <td>${c.nome || ""}</td>
+              <td>${c.idade || ""}</td>
+              <td>${c.pais || ""}</td>
+              <td>${c.provincia || ""}</td>
+              <td>${c.email || ""}</td>
+              <td>${c.telefone || ""}</td>
+              <td>${c.sobre || ""}</td>
+              <td>${c.foto ? `<a href="${c.foto}" target="_blank"><img src="${c.foto}"></a>` : ""}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+      } else {
+        alert("Usuário ou senha inválidos!");
+      }
+    }
+  </script>
+</body>
+</html>
