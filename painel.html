@@ -3,119 +3,822 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Painel de Administração</title>
+  <title>Painel de Administração - Mulheres do Game</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f0f;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
       color: #fff;
+      min-height: 100vh;
     }
+
+    /* Login Styles */
     .login-container {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #1e1e1e;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 30px #f1368f55;
-      width: 300px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
-    .login-container h2 {
-      margin-bottom: 20px;
+
+    .login-box {
+      background: rgba(30, 30, 30, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(241, 54, 143, 0.3);
+      border: 1px solid rgba(241, 54, 143, 0.2);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+    }
+
+    .login-box .logo {
+      font-size: 2.5rem;
+      color: #f1368f;
+      margin-bottom: 8px;
+    }
+
+    .login-box h2 {
+      color: #fff;
+      margin-bottom: 32px;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px 16px 50px;
+      background: rgba(46, 46, 46, 0.8);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #f1368f;
+      background: rgba(46, 46, 46, 1);
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      transition: color 0.3s ease;
+    }
+
+    .input-group input:focus + i {
       color: #f1368f;
     }
-    .login-container input {
+
+    .login-btn {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      background: #2e2e2e;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-    }
-    .login-container button {
-      width: 100%;
-      background: #f1368f;
+      background: linear-gradient(135deg, #f1368f 0%, #e91e63 100%);
       border: none;
       color: white;
-      padding: 10px;
-      font-weight: bold;
-      margin-top: 10px;
-      border-radius: 5px;
+      padding: 16px;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(241, 54, 143, 0.4);
+    }
+
+    /* Panel Styles */
     .panel {
-      padding: 20px;
+      display: none;
+      min-height: 100vh;
     }
+
+    .header {
+      background: rgba(30, 30, 30, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(241, 54, 143, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-left .logo {
+      font-size: 1.8rem;
+      color: #f1368f;
+    }
+
+    .header-left h1 {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: rgba(46, 46, 46, 0.5);
+      border-radius: 25px;
+    }
+
+    .logout-btn {
+      background: rgba(241, 54, 143, 0.2);
+      border: 1px solid #f1368f;
+      color: #f1368f;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #f1368f;
+      color: white;
+    }
+
+    .main-content {
+      padding: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Controls Section */
+    .controls {
+      background: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(20px);
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(241, 54, 143, 0.1);
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 20px 12px 45px;
+      background: rgba(46, 46, 46, 0.8);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #f1368f;
+      background: rgba(46, 46, 46, 1);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 12px 16px;
+      background: rgba(46, 46, 46, 0.8);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #f1368f;
+    }
+
+    .export-btn {
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+    }
+
+    .clear-filters-btn {
+      background: rgba(255, 152, 0, 0.2);
+      border: 1px solid #ff9800;
+      color: #ff9800;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .clear-filters-btn:hover {
+      background: #ff9800;
+      color: white;
+    }
+
+    /* Stats Section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(241, 54, 143, 0.1);
+      text-align: center;
+    }
+
+    .stat-card .icon {
+      font-size: 2rem;
+      color: #f1368f;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .label {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* Table Styles */
+    .table-container {
+      background: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(241, 54, 143, 0.1);
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .results-count {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #222;
-      margin-top: 20px;
     }
-    th, td {
-      padding: 10px;
-      border: 1px solid #555;
+
+    th {
+      background: rgba(46, 46, 46, 0.8);
+      padding: 16px 12px;
       text-align: left;
-    }
-    h1 {
+      font-weight: 600;
       color: #f1368f;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid rgba(241, 54, 143, 0.3);
     }
-    img {
-      max-width: 100px;
+
+    td {
+      padding: 16px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 0.9rem;
     }
-    #painel-content {
-      display: none;
+
+    tr:hover {
+      background: rgba(241, 54, 143, 0.05);
+    }
+
+    .photo-cell img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f1368f;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .photo-cell img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(241, 54, 143, 0.4);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+
+    .no-results i {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-box {
+        min-width: auto;
+      }
+
+      .filter-group {
+        justify-content: space-between;
+      }
+
+      table {
+        font-size: 0.8rem;
+      }
+
+      th, td {
+        padding: 12px 8px;
+      }
+
+      .login-box {
+        margin: 20px;
+        padding: 32px;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(241, 54, 143, 0.3);
+      border-radius: 50%;
+      border-top-color: #f1368f;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
+  <!-- Login Form -->
   <div class="login-container" id="login-form">
-    <h2>Login do Painel</h2>
-    <input type="text" id="usuario" placeholder="Usuário" />
-    <input type="password" id="senha" placeholder="Senha" />
-    <button onclick="fazerLogin()">Entrar</button>
+    <div class="login-box">
+      <div class="logo">
+        <i class="fas fa-gamepad"></i>
+      </div>
+      <h2>Painel Administrativo</h2>
+      <div class="input-group">
+        <input type="text" id="usuario" placeholder="Usuário" />
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="input-group">
+        <input type="password" id="senha" placeholder="Senha" />
+        <i class="fas fa-lock"></i>
+      </div>
+      <button class="login-btn" onclick="fazerLogin()">
+        <span id="login-text">Entrar</span>
+        <div id="login-loading" class="loading" style="display: none;"></div>
+      </button>
+    </div>
   </div>
+
+  <!-- Main Panel -->
   <div class="panel" id="painel-content">
-    <h1>Candidaturas Recebidas</h1>
-    <table id="tabela">
-      <thead>
-        <tr><th>ID</th><th>Nome</th><th>Idade</th><th>País</th><th>Província</th><th>Email</th><th>Telefone</th><th>Sobre</th><th>Foto</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="logo">
+          <i class="fas fa-gamepad"></i>
+        </div>
+        <h1>Mulheres do Game</h1>
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <i class="fas fa-user-circle"></i>
+          <span>Administrador</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Sair
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="icon"><i class="fas fa-users"></i></div>
+          <div class="number" id="total-candidatas">0</div>
+          <div class="label">Total de Candidatas</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon"><i class="fas fa-filter"></i></div>
+          <div class="number" id="filtered-count">0</div>
+          <div class="label">Resultados Filtrados</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon"><i class="fas fa-globe"></i></div>
+          <div class="number" id="countries-count">0</div>
+          <div class="label">Países Representados</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon"><i class="fas fa-calendar"></i></div>
+          <div class="number" id="today-count">0</div>
+          <div class="label">Candidaturas Hoje</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <div class="controls-row">
+          <div class="search-box">
+            <input type="text" id="search" placeholder="Buscar por nome, email, país..." />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="filter-group">
+            <select class="filter-select" id="country-filter">
+              <option value="">Todos os países</option>
+            </select>
+            <select class="filter-select" id="age-filter">
+              <option value="">Todas as idades</option>
+              <option value="18-25">18-25 anos</option>
+              <option value="26-35">26-35 anos</option>
+              <option value="36-45">36-45 anos</option>
+              <option value="46+">46+ anos</option>
+            </select>
+            <button class="clear-filters-btn" onclick="clearFilters()">
+              <i class="fas fa-times"></i>
+              Limpar
+            </button>
+          </div>
+          <button class="export-btn" onclick="exportToCSV()">
+            <i class="fas fa-download"></i>
+            Exportar CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <div class="table-title">Candidaturas Recebidas</div>
+          <div class="results-count" id="results-count">0 resultados</div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table id="tabela">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Foto</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>País</th>
+                <th>Província</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Sobre</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="no-results" id="no-results" style="display: none;">
+          <i class="fas fa-search"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente ajustar os filtros ou termo de busca</p>
+        </div>
+      </div>
+    </div>
   </div>
+
   <script>
+    let candidatas = [];
+    let filteredCandidatas = [];
+
     function fazerLogin() {
       const usuario = document.getElementById("usuario").value;
       const senha = document.getElementById("senha").value;
-      if (usuario === "Mendel1122" && senha === "1@Mendel") {
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("painel-content").style.display = "block";
-        fetch("/api/candidaturas").then(r => r.json()).then(candidatas => {
-          const tbody = document.querySelector("tbody");
-          candidatas.forEach(c => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${c.id}</td>
-              <td>${c.nome || ""}</td>
-              <td>${c.idade || ""}</td>
-              <td>${c.pais || ""}</td>
-              <td>${c.provincia || ""}</td>
-              <td>${c.email || ""}</td>
-              <td>${c.telefone || ""}</td>
-              <td>${c.sobre || ""}</td>
-              <td>${c.foto ? `<a href="${c.foto}" target="_blank"><img src="${c.foto}"></a>` : ""}</td>
-            `;
-            tbody.appendChild(tr);
-          });
-        });
-      } else {
-        alert("Usuário ou senha inválidos!");
+      const loginBtn = document.querySelector(".login-btn");
+      const loginText = document.getElementById("login-text");
+      const loginLoading = document.getElementById("login-loading");
+
+      if (!usuario || !senha) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
+
+      // Show loading
+      loginText.style.display = "none";
+      loginLoading.style.display = "inline-block";
+      loginBtn.disabled = true;
+
+      setTimeout(() => {
+        if (usuario === "Mendel1122" && senha === "1@Mendel") {
+          document.getElementById("login-form").style.display = "none";
+          document.getElementById("painel-content").style.display = "block";
+          carregarCandidatas();
+        } else {
+          alert("Usuário ou senha inválidos!");
+          loginText.style.display = "inline";
+          loginLoading.style.display = "none";
+          loginBtn.disabled = false;
+        }
+      }, 1000);
+    }
+
+    function logout() {
+      if (confirm("Tem certeza que deseja sair?")) {
+        document.getElementById("login-form").style.display = "flex";
+        document.getElementById("painel-content").style.display = "none";
+        document.getElementById("usuario").value = "";
+        document.getElementById("senha").value = "";
+        document.getElementById("login-text").style.display = "inline";
+        document.getElementById("login-loading").style.display = "none";
+        document.querySelector(".login-btn").disabled = false;
       }
     }
+
+    async function carregarCandidatas() {
+      try {
+        const response = await fetch("/api/candidaturas");
+        candidatas = await response.json();
+        filteredCandidatas = [...candidatas];
+        
+        populateFilters();
+        updateStats();
+        renderTable();
+      } catch (error) {
+        console.error("Erro ao carregar candidaturas:", error);
+        alert("Erro ao carregar os dados. Verifique a conexão.");
+      }
+    }
+
+    function populateFilters() {
+      const countryFilter = document.getElementById("country-filter");
+      const countries = [...new Set(candidatas.map(c => c.pais).filter(Boolean))].sort();
+      
+      countryFilter.innerHTML = '<option value="">Todos os países</option>';
+      countries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        countryFilter.appendChild(option);
+      });
+    }
+
+    function updateStats() {
+      const total = candidatas.length;
+      const filtered = filteredCandidatas.length;
+      const countries = new Set(candidatas.map(c => c.pais).filter(Boolean)).size;
+      
+      // Calculate today's applications (assuming created_at field exists)
+      const today = new Date().toISOString().split('T')[0];
+      const todayCount = candidatas.filter(c => 
+        c.created_at && c.created_at.startsWith(today)
+      ).length;
+
+      document.getElementById("total-candidatas").textContent = total;
+      document.getElementById("filtered-count").textContent = filtered;
+      document.getElementById("countries-count").textContent = countries;
+      document.getElementById("today-count").textContent = todayCount;
+    }
+
+    function renderTable() {
+      const tbody = document.querySelector("tbody");
+      const noResults = document.getElementById("no-results");
+      const resultsCount = document.getElementById("results-count");
+
+      tbody.innerHTML = "";
+
+      if (filteredCandidatas.length === 0) {
+        noResults.style.display = "block";
+        resultsCount.textContent = "0 resultados";
+        return;
+      }
+
+      noResults.style.display = "none";
+      resultsCount.textContent = `${filteredCandidatas.length} resultado${filteredCandidatas.length !== 1 ? 's' : ''}`;
+
+      filteredCandidatas.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.id}</td>
+          <td class="photo-cell">
+            ${c.foto ? `<img src="${c.foto}" alt="Foto de ${c.nome}" onclick="window.open('${c.foto}', '_blank')">` : '<i class="fas fa-user-circle" style="font-size: 2rem; color: #555;"></i>'}
+          </td>
+          <td><strong>${c.nome || "N/A"}</strong></td>
+          <td>${c.idade || "N/A"}</td>
+          <td>${c.pais || "N/A"}</td>
+          <td>${c.provincia || "N/A"}</td>
+          <td>${c.email || "N/A"}</td>
+          <td>${c.telefone || "N/A"}</td>
+          <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.sobre || ''}">${c.sobre || "N/A"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateStats();
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById("search").value.toLowerCase();
+      const countryFilter = document.getElementById("country-filter").value;
+      const ageFilter = document.getElementById("age-filter").value;
+
+      filteredCandidatas = candidatas.filter(c => {
+        // Search filter
+        const matchesSearch = !searchTerm || 
+          (c.nome && c.nome.toLowerCase().includes(searchTerm)) ||
+          (c.email && c.email.toLowerCase().includes(searchTerm)) ||
+          (c.pais && c.pais.toLowerCase().includes(searchTerm)) ||
+          (c.provincia && c.provincia.toLowerCase().includes(searchTerm));
+
+        // Country filter
+        const matchesCountry = !countryFilter || c.pais === countryFilter;
+
+        // Age filter
+        let matchesAge = true;
+        if (ageFilter && c.idade) {
+          const age = parseInt(c.idade);
+          switch (ageFilter) {
+            case "18-25":
+              matchesAge = age >= 18 && age <= 25;
+              break;
+            case "26-35":
+              matchesAge = age >= 26 && age <= 35;
+              break;
+            case "36-45":
+              matchesAge = age >= 36 && age <= 45;
+              break;
+            case "46+":
+              matchesAge = age >= 46;
+              break;
+          }
+        }
+
+        return matchesSearch && matchesCountry && matchesAge;
+      });
+
+      renderTable();
+    }
+
+    function clearFilters() {
+      document.getElementById("search").value = "";
+      document.getElementById("country-filter").value = "";
+      document.getElementById("age-filter").value = "";
+      filteredCandidatas = [...candidatas];
+      renderTable();
+    }
+
+    function exportToCSV() {
+      if (filteredCandidatas.length === 0) {
+        alert("Não há dados para exportar!");
+        return;
+      }
+
+      const headers = ["ID", "Nome", "Idade", "País", "Província", "Email", "Telefone", "Sobre", "Foto"];
+      const csvContent = [
+        headers.join(","),
+        ...filteredCandidatas.map(c => [
+          c.id,
+          `"${(c.nome || "").replace(/"/g, '""')}"`,
+          c.idade || "",
+          `"${(c.pais || "").replace(/"/g, '""')}"`,
+          `"${(c.provincia || "").replace(/"/g, '""')}"`,
+          c.email || "",
+          c.telefone || "",
+          `"${(c.sobre || "").replace(/"/g, '""')}"`,
+          c.foto || ""
+        ].join(","))
+      ].join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `candidaturas_mulheres_do_game_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Event listeners
+    document.getElementById("search").addEventListener("input", applyFilters);
+    document.getElementById("country-filter").addEventListener("change", applyFilters);
+    document.getElementById("age-filter").addEventListener("change", applyFilters);
+
+    // Enter key for login
+    document.addEventListener("keypress", function(e) {
+      if (e.key === "Enter" && document.getElementById("login-form").style.display !== "none") {
+        fazerLogin();
+      }
+    });
   </script>
 </body>
 </html>
