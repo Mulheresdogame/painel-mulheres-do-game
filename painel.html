@@ -469,7 +469,7 @@
       <div class="logo">
         <i class="fas fa-gamepad"></i>
       </div>
-      <h2>Painel Administrativo</h2>
+      <h2>GALERIA SECRETA - Admin</h2>
       <div class="input-group">
         <input type="text" id="usuario" placeholder="Usuário" />
         <i class="fas fa-user"></i>
@@ -493,7 +493,7 @@
         <div class="logo">
           <i class="fas fa-gamepad"></i>
         </div>
-        <h1>Mulheres do Game</h1>
+        <h1>GALERIA SECRETA</h1>
       </div>
       <div class="header-right">
         <div class="user-info">
@@ -802,6 +802,7 @@
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", `candidaturas_mulheres_do_game_${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute("download", `galeria_secreta_${new Date().toISOString().split('T')[0]}.csv`);
       link.style.visibility = "hidden";
       document.body.appendChild(link);
       link.click();
